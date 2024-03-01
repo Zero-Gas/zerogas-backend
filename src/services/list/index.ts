@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { ethers } from "ethers";
+
 import { AddUserToListDto } from "./dto";
+import { validateAddress } from "../../utils";
 import User from "../../models/user";
 
 export const addUserToList = async (req: Request, res: Response) => {
@@ -8,7 +9,7 @@ export const addUserToList = async (req: Request, res: Response) => {
     const data: AddUserToListDto = req.body;
 
     //check valid address
-    if (!ethers.isAddress(data.address)) {
+    if (!validateAddress(data.address, data.type)) {
       //throw new Error("Address is not valid!");
       return res.status(400).json({ message: "Address is not valid!" });
     }
